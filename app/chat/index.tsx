@@ -1,38 +1,83 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { useState } from "react";
+import { View, Text, FlatList, SafeAreaView, TouchableOpacity, Image } from "react-native";
+import { useGlobalSearchParams, useRouter } from "expo-router";
+import Header from "@/components/Header";
+import { icons } from "@/constants";
+import { LinearGradient } from "expo-linear-gradient";
+import MessageInput from "@/components/MessageInput";
 
-export default function Chat() {
+const ChatScreen = () => {
+  const { message } = useGlobalSearchParams();
+
+  const [messages, setMessages] = useState([
+    { id: 1, text: message || "Welcome to the chat!", isUser: false },
+  ]);
+
+  const handleSend = (text: string) => {
+    if (text.trim()) {
+      setMessages((prev) => [
+        { id: Date.now(), text, isUser: true }, 
+        ...prev,
+      ]);
+    }
+  };
+
   return (
-    <View className="bg-primary h-full">
-      {/* Верхній бар */}
-      <View className="flex-row justify-between items-center px-4 py-4 bg-gray-dark">
-        <TouchableOpacity>
-          <Text className="text-white font-pmedium">Back</Text>
-        </TouchableOpacity>
-        <Text className="text-white font-pbold text-lg">Chat</Text>
-        <TouchableOpacity>
-          <Text className="text-white font-pmedium">More</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView className="flex-1 bg-primary">
+      <Header
+        title="Chat"
+        rightComponent={
+          <View className="flex-row gap-4">
+            <TouchableOpacity>
+              <Image source={icons.menu} className="w-6 h-6" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image source={icons.share} className="w-6 h-6" />
+            </TouchableOpacity>
+          </View>
+        }
+      />
 
-      {/* Секція чату */}
-      <ScrollView className="flex-1 px-4">
-        {/* Приклад повідомлення */}
-        <View className="bg-gray-light p-4 rounded-lg mb-4">
-          <Text className="text-white font-pregular">Welcome! How can I assist you today?</Text>
-        </View>
-      </ScrollView>
+      <FlatList
+        data={messages}
+        inverted 
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              alignSelf: item.isUser ? "flex-end" : "flex-start",
+              marginVertical: 6,
+              maxWidth: "90%",
+              borderRadius: 16,
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              borderBottomLeftRadius: item.isUser ? 16 : 4,
+              borderBottomRightRadius: item.isUser ? 4 : 16,
+              overflow: "hidden",
+            }}
+          >
+            <LinearGradient
+              colors={item.isUser ? ["#448ACA", "#5C34B1"] : ["#333338", "#333338"]}
+              start={{ x: 0.2, y: 0 }}
+              end={{ x: 0.9, y: 1 }}
+              style={{
+                paddingHorizontal: 16,
+                paddingVertical: 12,
+              }}
+            >
+              <Text className="font-iregular text-base text-white">{item.text}</Text>
+            </LinearGradient>
+          </View>
+        )}
+        contentContainerStyle={{ padding: 16 }}
+      />
 
-      {/* Поле вводу */}
-      <View className="flex-row items-center px-4 py-2 bg-gray-dark">
-        <TextInput
-          placeholder="Type a message..."
-          placeholderTextColor="#6E6E80"
-          className="flex-1 bg-gray-dark p-4 rounded-lg text-white"
-        />
-        <TouchableOpacity className="ml-2 p-4 bg-secondary rounded-lg">
-          <Text className="text-white">Send</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      <MessageInput
+        isChatScreen
+        onSend={handleSend} 
+      />
+    </SafeAreaView>
   );
-}
+};
+
+export default ChatScreen;

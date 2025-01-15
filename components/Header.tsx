@@ -2,7 +2,12 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { icons } from "@/constants";
 import GradientBadge from "./GradientBadge";
 
-const Header = () => {
+interface HeaderProps {
+  title: string; 
+  rightComponent?: React.ReactNode; 
+}
+
+const Header: React.FC<HeaderProps> = ({ title, rightComponent }) => {
   return (
     <View className="px-4 pt-2 pb-6">
       <View className="flex-row items-center justify-between px-1">
@@ -10,24 +15,11 @@ const Header = () => {
           <Image source={icons.setting} className="w-6 h-6" />
         </TouchableOpacity>
 
-
         <View className="pl-10">
-          <Text className="text-white text-xl font-imedium">
-            Explore
-          </Text>
+          <Text className="text-white text-xl font-imedium">{title}</Text>
         </View>
 
-        <TouchableOpacity>
-          <GradientBadge
-            gradientColors={["#448ACA", "#5C34B1"]}
-            borderGradientColors={["#59B0FF", "#925FFF"]}
-          >
-            <View className="flex-row px-2.5 py-1.5">
-              <Image source={icons.star} className="w-6 h-6 mr-2" />
-              <Text className="text-white text-base font-semibold">10</Text>
-            </View>
-          </GradientBadge>
-        </TouchableOpacity>
+        {rightComponent && <View>{rightComponent}</View>}
       </View>
     </View>
   );

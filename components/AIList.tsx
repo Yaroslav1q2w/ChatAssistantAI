@@ -2,7 +2,7 @@ import { icons } from "@/constants";
 import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
 import GradientBadge from "./GradientBadge";
 
-interface IListItem {
+export interface IListItem {
   id: string;
   name: string;
   image: any;
@@ -11,9 +11,10 @@ interface IListItem {
 interface IAIListProps {
   title: string;
   data: IListItem[];
+  onPress: (item: IListItem) => void; 
 }
 
-const AIList: React.FC<IAIListProps> = ({ title, data }) => {
+const AIList: React.FC<IAIListProps> = ({ title, data, onPress }) => {
   return (
     <View className="mt-6">
       <View className="flex-row justify-between items-center pb-2">
@@ -29,7 +30,10 @@ const AIList: React.FC<IAIListProps> = ({ title, data }) => {
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
-          <TouchableOpacity className="rounded-2xl items-center mr-2">
+          <TouchableOpacity
+            className="rounded-2xl items-center mr-2"
+            onPress={() => onPress(item)} 
+          >
             <View>
               <View className="bg-accent w-32 h-32 rounded-2xl justify-center items-center">
                 <Image source={item.image} className="w-[110] h-[124]" resizeMode="contain" />

@@ -1,8 +1,19 @@
-import { View, TextInput, TextInputProps, Image, ImageSourcePropType, StyleProp, ViewStyle } from "react-native";
+import { useState } from "react";
+import {
+  View,
+  TextInput,
+  TextInputProps,
+  Image,
+  ImageSourcePropType,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacity,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { icons } from "@/constants";
 
 interface IFormFieldProps extends TextInputProps {
-  gradientColors?: [string, string]; 
+  gradientColors?: [string, string];
   placeholderTextColor?: string;
   placeholder: string;
   icon?: ImageSourcePropType;
@@ -14,7 +25,9 @@ const FormField: React.FC<IFormFieldProps> = ({
   placeholder,
   icon,
   containerStyle,
-  ...props 
+  value,
+  onChangeText,
+  ...props
 }) => {
   const Wrapper = gradientColors ? LinearGradient : View;
 
@@ -33,16 +46,37 @@ const FormField: React.FC<IFormFieldProps> = ({
       }
     : { style: containerStyle };
 
+  const handleClearText = () => {
+    if (onChangeText) {
+      onChangeText("");
+    }
+  };
+
+  const shouldShowIcon = !value || value.length === 0; 
+
   return (
     <Wrapper {...(wrapperProps as any)}>
-      <View className="flex-row items-center bg-accent rounded-2xl px-4 py-2">
-        {icon && <Image source={icon} className="w-6 h-6" />}
+      <View className="flex-row items-center bg-accent rounded-2xl px-3 pb-1 relative">
+        {shouldShowIcon && icon && (
+          <Image source={icon} className="w-6 h-6 pt-0.5" />
+        )}
         <TextInput
-          className="flex-1 text-white py-3 px-4 text-base w-full"
+          className="flex-1 text-white px-4 py-3 text-base w-full max-h-[100px] text-top"
           placeholderTextColor="#93939F"
           placeholder={placeholder}
+          value={value}
+          onChangeText={onChangeText}
+          multiline
           {...props}
         />
+        {value && value.length > 0 && (
+          <TouchableOpacity
+            onPress={handleClearText}
+            className="absolute right-3 bottom-3"
+          >
+            <Image source={icons.close} className="w-6 h-6 tint-white" />
+          </TouchableOpacity>
+        )}
       </View>
     </Wrapper>
   );

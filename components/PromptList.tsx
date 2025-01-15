@@ -31,7 +31,7 @@ const PromptList: React.FC<IPromptListProps> = ({ title, data }) => {
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
-          <TouchableOpacity className="mr-4">
+          <TouchableOpacity className="mr-2">
             <LinearGradient
               colors={item.gradientColors} 
               style={{

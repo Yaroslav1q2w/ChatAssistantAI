@@ -11,6 +11,9 @@ import chek_icon from "../assets/icons/chek_icon.png";
 import explore from "../assets/icons/explore.png";
 import task from "../assets/icons/task.png";
 import history from "../assets/icons/history.png";
+import menu from "../assets/icons/menu.png";
+import share from "../assets/icons/share.png";
+import close from "../assets/icons/close.png";
 
 
 export default {
@@ -26,5 +29,8 @@ export default {
   explore,
   task,
   history,
-  send
+  send,
+  menu,
+  share,
+  close
 };

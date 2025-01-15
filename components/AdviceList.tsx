@@ -46,7 +46,7 @@ const AdviceList: React.FC<IAdviceListProps> = ({ title, data }) => {
               >
                 <View className="flex-row items-center">
                   <Image source={rowItem.image} className="w-8 h-8 mr-2" />
-                  <Text className="text-white text-xs w-[250]">{rowItem.name}</Text>
+                  <Text className="text-white text-xs w-[250] font-iregular">{rowItem.name}</Text>
                 </View>
               </TouchableOpacity>
             ))}

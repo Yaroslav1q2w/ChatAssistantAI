@@ -17,11 +17,10 @@ const DynamicButton: React.FC<IDynamicButtonProps> = ({ hasText, onPress }) => {
         gradientColors={["#448ACA", "#5C34B1"]}
         borderGradientColors={["#59B0FF", "#925FFF"]}
       >
-        <View className="w-16 h-16 items-center justify-center">
+        <View className="w-14 h-14 items-center justify-center">
           <Image
-            source={
-              hasText ? icons.send : icons.microphone }
-              className="w-4 h-5"
+            source={ hasText ? icons.send : icons.microphone }
+            className="w-4 h-5"
           />
         </View>
       </GradientBadge>
