@@ -13,9 +13,10 @@ interface IListItem {
 interface IPromptListProps {
   title: string;
   data: IListItem[];
+  onPress: (item: IListItem) => void; 
 }
 
-const PromptList: React.FC<IPromptListProps> = ({ title, data }) => {
+const PromptList: React.FC<IPromptListProps> = ({ title, data, onPress }) => {
   return (
     <View className="mt-6">
       <View className="flex-row justify-between items-center pb-2">
@@ -31,7 +32,7 @@ const PromptList: React.FC<IPromptListProps> = ({ title, data }) => {
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
-          <TouchableOpacity className="mr-2">
+          <TouchableOpacity className="mr-2" onPress={() => onPress(item)} >
             <LinearGradient
               colors={item.gradientColors} 
               style={{

@@ -61,7 +61,7 @@ const FormField: React.FC<IFormFieldProps> = ({
           <Image source={icon} className="w-6 h-6 pt-0.5" />
         )}
         <TextInput
-          className="flex-1 text-white px-4 py-3 text-base w-full max-h-[100px] text-top"
+          className="flex-1 text-white px-4 pr-5 py-3 text-base w-full max-h-[100px] text-top"
           placeholderTextColor="#93939F"
           placeholder={placeholder}
           value={value}

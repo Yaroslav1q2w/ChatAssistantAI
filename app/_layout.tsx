@@ -4,6 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "../global.css";
 import React from "react";
+import ChatProvider from "@/context/ChatContext";
 
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
@@ -31,11 +32,11 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <ChatProvider>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="chat" options={{ headerShown: false }} />
       </Stack>
-    </>
-  );
+    </ChatProvider>
+  )
 }

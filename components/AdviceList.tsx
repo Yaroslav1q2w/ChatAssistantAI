@@ -10,9 +10,10 @@ interface IListItem {
 interface IAdviceListProps {
   title: string;
   data: IListItem[];
+  onPress: (item: IListItem) => void; 
 }
 
-const AdviceList: React.FC<IAdviceListProps> = ({ title, data }) => {
+const AdviceList: React.FC<IAdviceListProps> = ({ title, data, onPress }) => {
   const chunkData = (array: IListItem[], size: number) => {
     const chunks = [];
     for (let i = 0; i < array.length; i += size) {
@@ -41,6 +42,7 @@ const AdviceList: React.FC<IAdviceListProps> = ({ title, data }) => {
           <View className="mr-2">
             {item.map((rowItem) => (
               <TouchableOpacity
+                onPress={() => onPress(rowItem)} 
                 key={rowItem.id}
                 className="bg-accent rounded-lg p-3 w-[346] mb-2"
               >

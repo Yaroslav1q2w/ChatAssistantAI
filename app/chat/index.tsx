@@ -1,26 +1,66 @@
-import { useState } from "react";
-import { View, Text, FlatList, SafeAreaView, TouchableOpacity, Image } from "react-native";
-import { useGlobalSearchParams, useRouter } from "expo-router";
+import { useState, useEffect } from "react";
+import { View, FlatList, SafeAreaView, TouchableOpacity, Image, Text } from "react-native";
+import { useGlobalSearchParams } from "expo-router";
 import Header from "@/components/Header";
 import { icons } from "@/constants";
 import { LinearGradient } from "expo-linear-gradient";
 import MessageInput from "@/components/MessageInput";
+import { useChat } from "@/context/ChatContext";
+import AnimatedTyping from "@/components/AnimatedTyping";
 
 const ChatScreen = () => {
-  const { message } = useGlobalSearchParams();
+  const { chatId } = useGlobalSearchParams();
+  const { chats, addMessageToChat } = useChat();
 
-  const [messages, setMessages] = useState([
-    { id: 1, text: message || "Welcome to the chat!", isUser: false },
-  ]);
+  console.log(chats)
+  const chat = chats.find((item) => item.id === chatId);
+
+  const [animatedMessages, setAnimatedMessages] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    if (chat && chat.messages.length === 1) {
+      setAnimatedMessages(new Set([chat.messages[0].id]));
+    } else {
+      setAnimatedMessages(new Set());
+    }
+  }, [chatId]);
 
   const handleSend = (text: string) => {
-    if (text.trim()) {
-      setMessages((prev) => [
-        { id: Date.now(), text, isUser: true }, 
-        ...prev,
-      ]);
+    if (text.trim() && chat) {
+      const userMessageId = Date.now();
+      addMessageToChat(chat.id, text, true);
+
+      const placeholderMessages = [
+        "Hello! How can I assist you today?",
+        "I'm here to help you.",
+        "Let's find the best solution together.",
+        "Can I provide you with some advice?",
+        "Feel free to ask me anything.",
+      ];
+
+      const botMessageText =
+        placeholderMessages[Math.floor(Math.random() * placeholderMessages.length)];
+
+      setTimeout(() => {
+        const botMessageId = Date.now();
+        addMessageToChat(chat.id, botMessageText, false);
+
+        setAnimatedMessages((prev) => {
+          const newSet = new Set(prev);
+          newSet.add(botMessageId);
+          return newSet;
+        });
+      }, botMessageText.length * 50);
     }
   };
+
+  if (!chat) {
+    return (
+      <SafeAreaView className="flex-1 bg-primary justify-center items-center">
+        <Text className="text-white text-lg">Chat not found</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-primary">
@@ -39,43 +79,45 @@ const ChatScreen = () => {
       />
 
       <FlatList
-        data={messages}
-        inverted 
+        data={chat?.messages || []}
+        inverted
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              alignSelf: item.isUser ? "flex-end" : "flex-start",
-              marginVertical: 6,
-              maxWidth: "90%",
-              borderRadius: 16,
-              borderTopLeftRadius: 16,
-              borderTopRightRadius: 16,
-              borderBottomLeftRadius: item.isUser ? 16 : 4,
-              borderBottomRightRadius: item.isUser ? 4 : 16,
-              overflow: "hidden",
-            }}
-          >
-            <LinearGradient
-              colors={item.isUser ? ["#448ACA", "#5C34B1"] : ["#333338", "#333338"]}
-              start={{ x: 0.2, y: 0 }}
-              end={{ x: 0.9, y: 1 }}
+        renderItem={({ item }) =>
+          item.text.trim() ? (
+            <View
               style={{
-                paddingHorizontal: 16,
-                paddingVertical: 12,
+                alignSelf: item.isUser ? "flex-end" : "flex-start",
+                marginVertical: 6,
+                maxWidth: "90%",
+                borderRadius: 16,
+                overflow: "hidden",
               }}
             >
-              <Text className="font-iregular text-base text-white">{item.text}</Text>
-            </LinearGradient>
-          </View>
-        )}
+              <LinearGradient
+                colors={item.isUser ? ["#448ACA", "#5C34B1"] : ["#333338", "#333338"]}
+                start={{ x: 0.2, y: 0 }}
+                end={{ x: 0.9, y: 1 }}
+                style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                }}
+              >
+                {animatedMessages.has(item.id) ? (
+                  <AnimatedTyping
+                    className="font-iregular text-base text-white"
+                    text={[item.text]}
+                  />
+                ) : (
+                  <Text className="font-iregular text-base text-white">{item.text}</Text>
+                )}
+              </LinearGradient>
+            </View>
+          ) : null
+        }
         contentContainerStyle={{ padding: 16 }}
       />
 
-      <MessageInput
-        isChatScreen
-        onSend={handleSend} 
-      />
+      <MessageInput isChatScreen onSend={handleSend} />
     </SafeAreaView>
   );
 };

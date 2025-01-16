@@ -1,12 +1,7 @@
 import { icons } from "@/constants";
 import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
 import GradientBadge from "./GradientBadge";
-
-export interface IListItem {
-  id: string;
-  name: string;
-  image: any;
-}
+import { IListItem } from "@/app/(tabs)/explore";
 
 interface IAIListProps {
   title: string;

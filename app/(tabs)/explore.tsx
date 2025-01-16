@@ -5,31 +5,50 @@ import Banner from "@/components/Banner";
 import FormField from "@/components/FormField";
 import { icons } from "@/constants";
 import { assistants, prompts, advices } from "@/constants/data";
-import AIList, { IListItem } from "@/components/AIList";
+import AIList from "@/components/AIList";
 import PromptList from "@/components/PromptList";
 import AdviceList from "@/components/AdviceList";
-import MessageInput from "@/components/MessageInput";
 import GradientBadge from "@/components/GradientBadge";
+import { useChat } from "@/context/ChatContext";
+import MessageInput from "@/components/MessageInput";
+
+export interface IListItem {
+  description?: string;
+  id: string;
+  name: string;
+  image: any;
+}
 
 const Explore = () => {
   const router = useRouter();
+  const { addChat } = useChat();
 
-  const handleCreateChat = (item: IListItem) => {
+  const handleCreateChat = (item: IListItem, type: string) => {
+    const initialMessage =
+      type === "AI"
+        ? `Hi! I’m ${item.name}, your AI assistant. How can I help you today?`
+        : type === "Prompt"
+        ? item.description || ""
+        : item.name;
+
+    const chatId = item.id || `chat-${Date.now()}`;
+
+    addChat(chatId, item.name, type, initialMessage);
     router.push({
       pathname: "/chat",
       params: {
-        type: "AI",
-        message: `Hello! I am ${item.name}`,
+        chatId,
       },
     });
   };
 
   const handleNavigateToEmptyChat = () => {
+    const chatId = `chat-${Date.now()}`;
+    addChat(chatId, "New Chat", "Empty", "");
     router.push({
       pathname: "/chat",
       params: {
-        type: "Empty",
-        message: "",
+        chatId,
       },
     });
   };
@@ -56,15 +75,27 @@ const Explore = () => {
           <FormField
             placeholder="Search"
             icon={icons.search}
-            onPress={handleNavigateToEmptyChat} 
+            onPress={handleNavigateToEmptyChat}
             editable={false}
           />
 
           <Banner />
 
-          <AIList title="AI Assistants" data={assistants} onPress={handleCreateChat} />
-          <PromptList title="Popular Prompts" data={prompts} />
-          <AdviceList title="Advices" data={advices} />
+          <AIList
+            title="AI Assistants"
+            data={assistants}
+            onPress={(item) => handleCreateChat(item, "AI")}
+          />
+          <PromptList
+            title="Popular Prompts"
+            data={prompts}
+            onPress={(item) => handleCreateChat(item, "Prompt")}
+          />
+          <AdviceList
+            title="Advices"
+            data={advices}
+            onPress={(item) => handleCreateChat(item, "Advice")}
+          />
         </View>
 
         <MessageInput />

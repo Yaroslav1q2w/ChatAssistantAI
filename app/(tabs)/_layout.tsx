@@ -1,6 +1,7 @@
 import { Image, ImageSourcePropType, Text, View } from "react-native";
 import { Tabs } from "expo-router";
 import { icons } from "@/constants";
+import React from "react";
 
 interface ITabIconProps {
   icon: ImageSourcePropType;
