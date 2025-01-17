@@ -14,6 +14,7 @@ import history from "../assets/icons/history.png";
 import menu from "../assets/icons/menu.png";
 import share from "../assets/icons/share.png";
 import close from "../assets/icons/close.png";
+import copy from "../assets/icons/copy.png";
 
 
 export default {
@@ -32,5 +33,6 @@ export default {
   send,
   menu,
   share,
-  close
+  close,
+  copy
 };

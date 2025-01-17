@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Text, TextStyle } from "react-native";
+import { Text } from "react-native";
 
 interface AnimatedTypingProps {
   text: string[]; 

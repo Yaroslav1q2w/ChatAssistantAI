@@ -1,6 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { icons } from "@/constants";
-import GradientBadge from "./GradientBadge";
 
 interface HeaderProps {
   title: string; 

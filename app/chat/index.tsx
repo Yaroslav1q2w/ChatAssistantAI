@@ -29,12 +29,12 @@ const ChatScreen = () => {
       addMessageToChat(chat.id, text, true);
 
       const placeholderMessages = [
-        "Hello! How can I assist you today?",
-        "I'm here to help you.",
+        "How can I assist you today?",
+        "I'm here to help you with whatever you need.",
         "Let's find the best solution together.",
-        "Can I provide you with some advice?",
-        "Feel free to ask me anything.",
-      ];
+        "Can I provide you with some advice today?",
+        "Feel free to ask me anything at all.",
+      ];      
 
       const botMessageText =
         placeholderMessages[Math.floor(Math.random() * placeholderMessages.length)];
@@ -87,7 +87,10 @@ const ChatScreen = () => {
                 alignSelf: item.isUser ? "flex-end" : "flex-start",
                 marginVertical: 6,
                 maxWidth: "90%",
-                borderRadius: 16,
+                borderTopLeftRadius: 16,
+                borderTopRightRadius: 16,
+                borderBottomLeftRadius: item.isUser ? 16 : 4,
+                borderBottomRightRadius: item.isUser ? 4 : 16,
                 overflow: "hidden",
               }}
             >
@@ -108,6 +111,17 @@ const ChatScreen = () => {
                 ) : (
                   <Text className="font-iregular text-base text-white">{item.text}</Text>
                 )}
+
+                <View className={`flex-row gap-2 mt-2 ${item.isUser ? 'justify-end' : 'justify-start'}`}>
+                  <TouchableOpacity className="flex-row items-center gap-1 bg-transparentDark px-3 py-1.5 rounded-lg">
+                    <Image source={icons.copy} className="w-4 h-4" />
+                    <Text className="text-white text-xs">Copy</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity className="flex-row items-center gap-1 bg-transparentDark px-3 py-1.5 rounded-lg">
+                    <Image source={icons.share} className="w-4 h-4" />
+                    <Text className="text-white text-xs">Share</Text>
+                  </TouchableOpacity>
+                </View>
               </LinearGradient>
             </View>
           ) : null

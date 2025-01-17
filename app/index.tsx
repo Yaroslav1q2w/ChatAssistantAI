@@ -1,5 +1,5 @@
 import { Redirect } from "expo-router";
-import { View, ActivityIndicator, Text, StatusBar } from "react-native";
+import { View, ActivityIndicator, Text } from "react-native";
 
 export default function App() {
   return (

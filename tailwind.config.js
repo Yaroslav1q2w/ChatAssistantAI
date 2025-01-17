@@ -16,6 +16,7 @@ module.exports = {
         text: {
           secondary: "#B3B3CC", 
         },
+        transparentDark: "rgba(255, 255, 255, 0.18)",
       },
       fontFamily: {
         ithin: ["Inter-Thin", "sans-serif"],
