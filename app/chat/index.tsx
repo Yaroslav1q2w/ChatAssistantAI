@@ -48,7 +48,7 @@ const ChatScreen = () => {
           newSet.add(botMessageId);
           return newSet;
         });
-      }, botMessageText.length * 50);
+      }, 500);
     }
   };
 
@@ -113,7 +113,6 @@ const ChatScreen = () => {
           ) : null
         }
         contentContainerStyle={{ padding: 16 }}
-        keyboardShouldPersistTaps="handled" // Дозволяє натискати, коли клавіатура активна
       />
 
       <MessageInput

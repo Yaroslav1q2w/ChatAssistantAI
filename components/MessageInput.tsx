@@ -55,9 +55,6 @@ const MessageInput: React.FC<IMessageInputProps> = ({ isChatScreen = false, onSe
             value={text}
             onChangeText={setText}
             editable={isChatScreen}
-            onEndEditing={() => {
-              console.log("edittttt")
-            }}
           />
 
           <DynamicButton
