@@ -1,5 +1,4 @@
-import { useRouter } from "expo-router";
-import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Image, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
 import Header from "@/components/Header";
 import Banner from "@/components/Banner";
 import FormField from "@/components/FormField";
@@ -11,6 +10,7 @@ import AdviceList from "@/components/AdviceList";
 import GradientBadge from "@/components/GradientBadge";
 import { useChat } from "@/context/ChatContext";
 import MessageInput from "@/components/MessageInput";
+import { useRouter } from "expo-router";
 
 export interface IListItem {
   description?: string;
@@ -24,23 +24,32 @@ const Explore = () => {
   const { addChat } = useChat();
 
   const handleCreateChat = (item: IListItem, type: string) => {
-    const initialMessage =
-      type === "AI"
-        ? `Hi! I’m ${item.name}, your AI assistant. How can I help you today?`
-        : type === "Prompt"
-        ? item.description || ""
-        : item.name;
-
+    let initialMessage = "";
+  
+    switch (type) {
+      case "AI":
+        initialMessage = `Hi! I’m ${item.name}, your AI assistant. How can I help you today?`;
+        break;
+      case "Prompt":
+        initialMessage = item.description || "";
+        break;
+      case "Advice":
+        initialMessage = item.name;
+        break;
+      default:
+        initialMessage = "Hello! How can I assist you?";
+    }
+  
     const chatId = item.id || `chat-${Date.now()}`;
-
+  
     addChat(chatId, item.name, type, initialMessage);
+  
     router.push({
       pathname: "/chat",
-      params: {
-        chatId,
-      },
+      params: { chatId },
     });
   };
+  
 
   const handleNavigateToEmptyChat = () => {
     const chatId = `chat-${Date.now()}`;
@@ -54,7 +63,7 @@ const Explore = () => {
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-primary flex-1">
       <Header
         title="Explore"
         rightComponent={
@@ -99,6 +108,9 @@ const Explore = () => {
         </View>
 
         <MessageInput />
+
+        <StatusBar barStyle="light-content"/>
+
       </ScrollView>
     </SafeAreaView>
   );

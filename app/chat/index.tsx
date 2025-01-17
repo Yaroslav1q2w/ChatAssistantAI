@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, FlatList, SafeAreaView, TouchableOpacity, Image, Text } from "react-native";
+import { View, FlatList, SafeAreaView, TouchableOpacity, Image, Text, Keyboard } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 import Header from "@/components/Header";
 import { icons } from "@/constants";
@@ -12,7 +12,6 @@ const ChatScreen = () => {
   const { chatId } = useGlobalSearchParams();
   const { chats, addMessageToChat } = useChat();
 
-  console.log(chats)
   const chat = chats.find((item) => item.id === chatId);
 
   const [animatedMessages, setAnimatedMessages] = useState<Set<number>>(new Set());
@@ -27,7 +26,6 @@ const ChatScreen = () => {
 
   const handleSend = (text: string) => {
     if (text.trim() && chat) {
-      const userMessageId = Date.now();
       addMessageToChat(chat.id, text, true);
 
       const placeholderMessages = [
@@ -115,9 +113,13 @@ const ChatScreen = () => {
           ) : null
         }
         contentContainerStyle={{ padding: 16 }}
+        keyboardShouldPersistTaps="handled" // Дозволяє натискати, коли клавіатура активна
       />
 
-      <MessageInput isChatScreen onSend={handleSend} />
+      <MessageInput
+        isChatScreen
+        onSend={handleSend}
+      />
     </SafeAreaView>
   );
 };

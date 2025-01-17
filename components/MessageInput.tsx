@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Platform, View } from "react-native";
 import { useRouter, useGlobalSearchParams } from "expo-router";
 import { icons } from "@/constants";
 import FormField from "@/components/FormField";
@@ -33,6 +33,7 @@ const MessageInput: React.FC<IMessageInputProps> = ({ isChatScreen = false, onSe
     if (text.trim() && isChatScreen && onSend) {
       onSend(text);
       setText("");
+      Keyboard.dismiss();
     }
   };
 
@@ -54,6 +55,9 @@ const MessageInput: React.FC<IMessageInputProps> = ({ isChatScreen = false, onSe
             value={text}
             onChangeText={setText}
             editable={isChatScreen}
+            onEndEditing={() => {
+              console.log("edittttt")
+            }}
           />
 
           <DynamicButton

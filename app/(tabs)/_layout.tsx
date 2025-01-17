@@ -1,7 +1,6 @@
 import { Image, ImageSourcePropType, Text, View } from "react-native";
 import { Tabs } from "expo-router";
 import { icons } from "@/constants";
-import React from "react";
 
 interface ITabIconProps {
   icon: ImageSourcePropType;
@@ -31,69 +30,67 @@ const TabIcon: React.FC<ITabIconProps> = ({ icon, color, name, focused }) => {
 
 const TabsLayout = () => {
 	return (
-		<>
-			<Tabs
-				screenOptions={{
-					tabBarShowLabel: false,
-					tabBarActiveTintColor: "#ffffff",
-					tabBarInactiveTintColor: "#6c6c76",
-					tabBarStyle: {
-						backgroundColor: "#1c1d22",
-						borderTopColor: "#1c1d22",
-						paddingTop: 20,
-            height: 76,
-					},
-				}}>
-				<Tabs.Screen
-					name="explore"
-					options={{
-						title: "Explore",
-						headerShown: false,
-						tabBarIcon: ({ color, focused }) => (
-							<TabIcon
-								icon={icons.explore}
-								color={color}
-								name="Explore"
-								focused={focused}
-							/>
-						),
-					}}
-				/>
-				<Tabs.Screen
-					name="tasks"
-					options={{
-						title: "Tasks",
-						headerShown: false,
-            tabBarIconStyle: {
-              paddingBottom: 15, 
-            },
-						tabBarIcon: ({ color, focused }) => (
-							<TabIcon
-								icon={icons.task}
-								color={color}
-								name="Tasks"
-								focused={focused}
-							/>
-						),
-					}}
-				/>
-				<Tabs.Screen
-					name="history"
-					options={{
-						title: "History",
-						headerShown: false,
-						tabBarIcon: ({ color, focused }) => (
-							<TabIcon
-								icon={icons.history}
-								color={color}
-								name="History"
-								focused={focused}
-							/>
-						),
-					}}
-				/>
-			</Tabs>
-		</>
+    <Tabs
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "#ffffff",
+        tabBarInactiveTintColor: "#6c6c76",
+        tabBarStyle: {
+          backgroundColor: "#1c1d22",
+          borderTopColor: "#1c1d22",
+          paddingTop: 20,
+          height: 76,
+        },
+      }}>
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: "Explore",
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={icons.explore}
+              color={color}
+              name="Explore"
+              focused={focused}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="tasks"
+        options={{
+          title: "Tasks",
+          headerShown: false,
+          tabBarIconStyle: {
+            paddingBottom: 15, 
+          },
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={icons.task}
+              color={color}
+              name="Tasks"
+              focused={focused}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: "History",
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={icons.history}
+              color={color}
+              name="History"
+              focused={focused}
+            />
+          ),
+        }}
+      />
+    </Tabs>
 	);
 };
 
